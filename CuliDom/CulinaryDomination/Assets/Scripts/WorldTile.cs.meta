@@ -1,0 +1,30 @@
+fileFormatVersion: 2
+guid: cfeb9507de88cb246ae8488cea4c92f4
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - model: {instanceID: 0}
+  - building: {instanceID: 0}
+  - clickUI: {instanceID: 0}
+  - secondaryClickUI: {instanceID: 0}
+  - hoverTextFab: {instanceID: 0}
+  - ruralAmbience: {fileID: 82024272717060662, guid: c129f6395144bdf4f8953f3fe9f69df5,
+      type: 2}
+  - suburbanAmbience: {fileID: 82549018319067778, guid: e9d9852d1dcb5b54fa811af629520be9,
+      type: 2}
+  - urbanAmbience: {fileID: 82439351325408906, guid: fb2f168f4adde6542955a174aca2c697,
+      type: 2}
+  - sfx_ambience_rural: {fileID: 8300000, guid: 5cf4a8f1d457e3441814d32e580bc8bd,
+      type: 3}
+  - sfx_ambience_suburban: {fileID: 8300000, guid: e954a91c1935a1444ac12d3dff62b5d5,
+      type: 3}
+  - sfx_ambience_urban: {fileID: 8300000, guid: f3178ee23f159144298cacd8d3b36c60,
+      type: 3}
+  - AudioManager: {fileID: 1303315725544146, guid: 5f4d394e210eb8e42a2dbcee87cd2bbe,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

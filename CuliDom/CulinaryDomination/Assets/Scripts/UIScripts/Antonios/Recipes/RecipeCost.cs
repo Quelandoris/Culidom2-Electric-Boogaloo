@@ -14,6 +14,7 @@ public class RecipeCost : MonoBehaviour {
     public GameObject resturantPopupMenu;
     public Slider costSlider;
     public Text nameText, costText, proftText, multiplierText;
+    public Image picture;
 
     GameObject window;
 
@@ -77,7 +78,8 @@ public class RecipeCost : MonoBehaviour {
         costText.text = (thisRecipe != null) ? "Cost: $" + thisRR.manufacturingCost.ToString("F2"): "";
         proftText.text = (thisRecipe != null) ? "Profit: $" + thisRR.sellingPrice.ToString("F2"): "";
         Debug.Log(thisRR.sellingPrice + " _____ " + thisRR.profit);
-        multiplierText.text = (thisRecipe != null) ? "Multiplier: " + (costSlider.value).ToString(): "";
+        multiplierText.text = (thisRecipe != null) ? (costSlider.value).ToString(): "";
+        picture.sprite = thisRecipe.picture;
         //costSlider.value = (float)sliderValue;
     }
 

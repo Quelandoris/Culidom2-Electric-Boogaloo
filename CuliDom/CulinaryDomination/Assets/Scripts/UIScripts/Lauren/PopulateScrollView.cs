@@ -64,6 +64,16 @@ public class PopulateScrollView : MonoBehaviour {
             savedRecipe.transform.parent = content;
             //content.sizeDelta = new Vector2(content.rect.width, content.rect.height + 20);
             savedRecipe.GetComponentInChildren<Text>().text = GameController.Instance().activePlayer.savedRecipies[i].name;
+            for (int j = 0; j < savedRecipe.transform.childCount; j++) {
+                Transform child = savedRecipe.transform.GetChild(j);
+                Image childImage = null;
+                if ((childImage = child.GetComponent<Image>()) != null) {
+                    
+                    childImage.sprite = GameController.Instance().activePlayer.savedRecipies[i].picture;
+                    break;
+                    
+                }
+            }
             savedRecipe.transform.localScale = new Vector3(1, 1, 1);
         }
     }

@@ -53,7 +53,7 @@ public class RecipeCost : MonoBehaviour {
         thisRecipe = rr.recipe;
         thisRR = rr;
         thisRestruant = GameController.Instance().activePlayer.restaurantClicked;
-        costSlider.value = 10 - rr.multiplier;
+        costSlider.value = rr.multiplier;
         UpdateText();
     }
     
@@ -74,10 +74,10 @@ public class RecipeCost : MonoBehaviour {
 
     public void UpdateText() {
         nameText.text = (thisRecipe != null) ? thisRecipe.name : "";
-        costText.text = (thisRecipe != null) ? thisRR.manufacturingCost.ToString("F2"): "";
-        proftText.text = (thisRecipe != null) ? thisRR.sellingPrice.ToString("F2"): "";
+        costText.text = (thisRecipe != null) ? "Cost: $" + thisRR.manufacturingCost.ToString("F2"): "";
+        proftText.text = (thisRecipe != null) ? "Profit: $" + thisRR.sellingPrice.ToString("F2"): "";
         Debug.Log(thisRR.sellingPrice + " _____ " + thisRR.profit);
-        multiplierText.text = (thisRecipe != null) ? (10 - costSlider.value).ToString(): "";
+        multiplierText.text = (thisRecipe != null) ? "Multiplier: " + (costSlider.value).ToString(): "";
         //costSlider.value = (float)sliderValue;
     }
 

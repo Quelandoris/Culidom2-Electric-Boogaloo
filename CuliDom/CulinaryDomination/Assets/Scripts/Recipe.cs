@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum DishCategory {
     MEXICAN,
@@ -14,6 +15,7 @@ public class Recipe{
     public string dishTemplate;
     public string name;
     public DishCategory dishCategory;
+    public Sprite picture;
 
     public Recipe(int slots)
     {

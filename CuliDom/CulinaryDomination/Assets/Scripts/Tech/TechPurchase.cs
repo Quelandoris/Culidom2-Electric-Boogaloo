@@ -23,6 +23,7 @@ public class TechPurchase : MonoBehaviour {
     public Text queueNumber;
 
     public GameObject queuedBanner;
+    public GameObject techPicture;
 
     public List<Tech> requirements;
     public List<Tech> previousLevel;
@@ -81,6 +82,8 @@ public class TechPurchase : MonoBehaviour {
     public void Unlock() {
         GameController.Instance().activePlayer.LearnTech(thisTech);
         Dequeue();
+        // turn on the picture cause you officially know this tech
+        techPicture.SetActive(true);
     }
 
     public void ButtonPress() {

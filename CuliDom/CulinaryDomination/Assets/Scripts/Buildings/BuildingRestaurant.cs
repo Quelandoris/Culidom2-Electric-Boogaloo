@@ -106,7 +106,15 @@ public class BuildingRestaurant : Building {
         Debug.Log("Have " + recipes.Count + " recipies");
         foreach (RestaurantRecipe r in recipes) {
             Debug.Log("Sold " + r.quantitySold + " units of " + r.recipe.name);
-            turnRevenue += (r.sellingPrice - r.manufacturingCost) * r.quantitySold;
+            if (upgrades.Contains(Tech.CHEAPER_INGREDIENTS))
+            {
+                double newManufacturingCost = r.manufacturingCost * 0.9;
+                turnRevenue += (r.sellingPrice - newManufacturingCost) * r.quantitySold;
+            }
+            else
+            {
+                turnRevenue += (r.sellingPrice - r.manufacturingCost) * r.quantitySold;
+            }
             r.quantitySold = 0;
         }
         //EveryCorner
@@ -322,7 +330,7 @@ public class BuildingRestaurant : Building {
         if(reviewCount == 0) {
             //returns default ratingMultiplyer
             ret = defaultRating;
-        } else if(reviewCount<reviews.Length) {
+        } else if(reviewCount < reviews.Length) {
             for (int i = 0; i<reviewCount; i++) {
                 ret += reviews[i];
             }
@@ -333,6 +341,22 @@ public class BuildingRestaurant : Building {
             }
             ret = ret / reviews.Length;
         }
+        // Add in rating tech bonuses //
+        if (GameController.Instance().activePlayer.HaveTech(Tech.CHIPS_SALSA)) { 
+            ret += 0.2;
+            if (ret > 10.0) {
+                ret = 10.0;
+            }
+        }
+
+        if (GameController.Instance().activePlayer.HaveTech(Tech.SAUCE_BAR)) {
+            ret += 0.4;
+            if (ret > 10.0)
+            {
+                ret = 10.0;
+            }
+        }
+
         return ret;
         //value from 0 - 10 is rating
     }

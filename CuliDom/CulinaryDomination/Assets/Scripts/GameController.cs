@@ -90,7 +90,7 @@ public class GameController {
         //mainUI.CloseUI();
         Camera.main.GetComponent<MouseSelect>().UnClick();
 
-        mainUI.AddTechPoints(activePlayer.GetTechPointRate());
+        mainUI.AddTechPoints(activePlayer.GetTechPointRate()); // update the UI 
 
         //Change activePlayer and update turn count
         turn++;
@@ -227,6 +227,12 @@ public class GameController {
                                 if (ti.ingredient == customer.favoriteIngredient) {
                                     favoriteScore++;
                                 }
+                                
+                            }
+
+                            if (((BuildingRestaurant)restaurantTiles[i].building).GetTechUpgrades().Contains(Tech.RECIPE_BOOST))
+                            {
+                                favoriteScore++;
                             }
                         }
                         averageDishCost = averageDishCost / recipes.Count;
@@ -278,14 +284,24 @@ public class GameController {
                         int distScore = 0;
                         if (restaurantTiles[i].building.tile.district == residential.district) {
                             distScore = 4;
+                            
+                        }
+                        else {
+                            if (((BuildingRestaurant)restaurantTiles[i].building).GetTechUpgrades().Contains(Tech.SAUCE_BAR))
+                            {
+                                distScore += 2;
+                            }
                         }
 
                         int aversionScore = 0;
                         if (customer.hatedIngredient != RecipeIngredient.EMPTY && ingredients.Contains(customer.hatedIngredient)) {
-                            aversionScore = -4;
+                            aversionScore -= 4;
+                        }
+                        if (((BuildingRestaurant)restaurantTiles[i].building).GetTechUpgrades().Contains(Tech.AMBIENT_MUSIC)) {
+                            aversionScore += 2;
                         }
 
-                        scores[i] = Mathf.Max(0, favoriteScore + prefScore + priceScore + distScore + aversionScore + Mathf.RoundToInt((float)((BuildingRestaurant)restaurantTiles[i].building).GetRating()));
+                            scores[i] = Mathf.Max(0, favoriteScore + prefScore + priceScore + distScore + aversionScore + Mathf.RoundToInt((float)((BuildingRestaurant)restaurantTiles[i].building).GetRating()));
                     }
 
                     
@@ -317,7 +333,8 @@ public class GameController {
                 int bestIndex = -1;
                 int roll = Random.Range(0, totalPoints) + 1;
                 
-                int cumulativeSeek = 0;
+
+                    int cumulativeSeek = 0;
                 for(int i = 0; i < scores.Length; i++)
                 {
                     cumulativeSeek += scores[i];

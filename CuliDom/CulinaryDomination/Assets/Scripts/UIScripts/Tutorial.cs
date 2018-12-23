@@ -3,22 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Tutorial : MonoBehaviour {
+public class Tutorial : MonoBehaviour
+{
 
 
 
     public Text tutorial;
 
-    private int player1Step = -1, player2Step = -1, player3Step = -1, player4Step = -1;
+    private int player1Step = -6, player2Step = -6, player3Step = -6, player4Step = -6;
 
-    private int step = -1, currentPlayer = 1;
+    private int step = -6, currentPlayer = 1;
 
-    public GameObject tutorialDisplayH, tutorialDisplayV, tutorialDisplaySquare, tutorialDisplayF, tutorial_GO;
+    public GameObject tutorialDisplayH, tutorial_GO;
 
     public Image tutorialImagesHorizontal;
-    public Image tutorialImagesVertical;
-    public Image tutorialImagesSquare;
-    public Image tutorialImagesFlat;
 
     public FactionsUI factionsSetup;
     CameraMovement camera;
@@ -26,14 +24,17 @@ public class Tutorial : MonoBehaviour {
     public int activePlayers;
 
 
-    public Sprite s_logo, s_vacantLot, s_restaurantManager, s_empireScreenButton, s_empireScreen, s_restaurantScreenButton, s_restaurantScreen,
-        s_escapeButton, s_MenuButton, s_menuPanel, addDishPanel, s_adjustingPriceSlider, s_recipesTab, s_RecipeManagerPic, s_ingredientsTab, s_createRecipeButton,
-        s_dishtab, s_dishBlueprint, s_ingredientDisplay, s_ingredientPanel, s_residentPanel, s_tierDisplay, s_SaveRecipeButton, s_SavedRecipesButton, s_staffPanel, s_chefPanel,
-        s_constructionQueue, s_chefManagmentTab, s_chefManagerScreen, s_assignChefPanel, s_techTab, s_techTreeWindow, s_queueTech, s_resourceDisplay, IngredientPointDisplay, s_upgradingIngredients,
-        s_constructionBuildButton, s_endTurnButton, s_satisfaction;
+    public Sprite s_logo, s_vacantLot, s_districtPanel, s_districtBoarders, s_wholeMap, s_threeRestaurants, empireTabButton,
+        s_empireManager, s_chefScreenManager, s_restaurantManager, s_satisfactionDisplay, s_staffManager, s_chefManager, s_constructionque,
+        s_menuWindow, s_addDishWindow, s_recipeSlider, s_techTree, s_savedRecipes, s_createRecipe, s_ingredientScreen,
+        s_upgradeIngredientButton, s_ingredientCatagoryTabs, s_questionMarkButton;
+
+    public Sprite s_money_science, s_resourceDisplay, s_closeButton, s_ownedRestaurant, s_ChefmanagerTab, s_recipesTab, s_recipeScreen, s_createScreen,
+        s_ingredientSlot, s_ingredientsMenu, s_ingredientsScreen, s_techTab, s_winnerScreen;
 
     void Awake()
     {
+        step = -6;
         factionsSetup = GetComponent<FactionsUI>();
         camera = FindObjectOfType<CameraMovement>();
     }
@@ -186,467 +187,311 @@ public class Tutorial : MonoBehaviour {
     // Updates the text and images of the tutorial
     public void UpdateText()
     {
+        if (step == -6)
+        {
+
+            tutorialImagesHorizontal.sprite = s_logo;
+            tutorial.text = "Welcome to Culinary Domination! In this tutorial we'll teach you about the various mechanics that will build your culinary empire.";
+        }
+        if (step == -5)
+        {
+
+            tutorialImagesHorizontal.sprite = s_resourceDisplay;
+            tutorial.text = "First lets look at our resources in the top left corner. In culinary domination there are two global resources. Money and Science.";
+        }
+        if (step == -4)
+        {
+
+            tutorialImagesHorizontal.sprite = s_money_science;
+            tutorial.text = "Money is used for purchasing new restaurants and creating new expensive recipes. Science is used for researching new techs. More money is gained at the beginning of each turn. Science can be upgraded but how much science you have is how much is being used for research for each turn;";
+        }
+        if (step == -3)
+        {
+
+            tutorialImagesHorizontal.sprite = s_districtBoarders;
+            tutorial.text = "Now let's have a look at the map. The map is divided into different counties and districts indicated by the colored borders.";
+        }
+        if (step == -2)
+        {
+
+            tutorialImagesHorizontal.sprite = s_districtPanel;
+            tutorial.text = "Clicking on the map will open up the district window displaying various information regarding the district. It displays the customers preferences, incomes, and ingredient likes and dislikes.";
+        }
         if (step == -1)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(true);
-            tutorialImagesHorizontal.sprite = s_logo;
-            tutorial.text = "Welcome to Culinary Domination, in this tutorial we'll teach you about the various mechanics that will build your culinary empire.";
+
+            tutorialImagesHorizontal.sprite = s_districtPanel;
+            tutorial.text = "Districts also determine where customers are more likely to go based the distance of the restaurant to the district. Ingredient preferences are also important, customers are more likely to go to restaurant if they see an ingredient they prefer.";
         }
         if (step == 0)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(true);
+
             tutorialImagesHorizontal.sprite = s_vacantLot;
-            tutorial.text = "Before we do anything why don't we start by creating our first restaurant. Click on a vancant lot and select purchase.";
+            tutorial.text = "Now why don't we start by creating our first restaurant. Click on a vacant lot and select (Start Bidding)";
         }
         if (step == 1)
         {
-            tutorialDisplayF.SetActive(true);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesFlat.sprite = s_empireScreenButton;
-            tutorial.text = "Awesome! Now that we own a restaurant we can view it in the empire management screen by clicking the empire button.";
+
+            tutorialImagesHorizontal.sprite = s_ownedRestaurant;
+            tutorial.text = "After bidding, the winner owns that vacant plot and has created their very own restaurant";
         }
         if (step == 2)
         {
-            tutorialDisplayF.SetActive(true);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesFlat.sprite = s_restaurantScreenButton;
-            tutorial.text = "In the empire screen we can manage our restaurant and chefs. For now let's go to the restaraunt manager";
+
+            tutorialImagesHorizontal.sprite = empireTabButton;
+            tutorial.text = "If the player owns any restaurants, they can view all the restaurants they own in the empire managment screen. To access this screen click on the empire tab in the top left corner.(The Crown)";
         }
         if (step == 3)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(true);
-            tutorialImagesHorizontal.sprite = s_restaurantScreen;
-            tutorial.text = "In the restaurant screen we can view and manage all of our restaurants.";
+
+            tutorialImagesHorizontal.sprite = s_empireManager;
+            tutorial.text = "The empire screen is where players can manage all their restaurants and chefs.";
         }
         if (step == 4)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(true);
-            tutorialImagesHorizontal.sprite = s_escapeButton;
-            tutorial.text = "Now let's close out of the empire screen and return to our restaurant.(Press (Esc) to close)";
+
+            tutorialImagesHorizontal.sprite = s_empireManager;
+            tutorial.text = "If a player clicks on the restaurant displayed in the manager, then the game will take the player straight to the restaurant on the map.";
         }
         if (step == 5)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(true);
-            tutorialImagesHorizontal.sprite = s_restaurantManager;
-            tutorial.text = "Reselect your restaurant and you'll see in the UI there's a variety of tools that enable us to control our restaurant.";
+
+            tutorialImagesHorizontal.sprite = s_closeButton;
+            tutorial.text = "However if the player simply wants to close the empire manager, they can press the close button in the top right corner, or press the (esc) button on their keyboard";
         }
         if (step == 6)
         {
-            tutorialDisplayF.SetActive(true);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesFlat.sprite = s_MenuButton;
-            tutorial.text = "First we'll look at the menu button.";
+
+            tutorialImagesHorizontal.sprite = s_ownedRestaurant;
+            tutorial.text = "Let's return to our restaurant. By selecting it we can manage that restaurant in particular";
         }
         if (step == 7)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(true);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesVertical.sprite = s_menuPanel;
 
-            tutorial.text = "Here we have can choose to add or delete recipes that we've created.";
+            tutorialImagesHorizontal.sprite = s_restaurantManager;
+            tutorial.text = "In the restaurant manager we can make decisions that directly effect the restaurant we've selected.";
         }
         if (step == 8)
         {
-            tutorialDisplayF.SetActive(true);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesFlat.sprite = s_recipesTab;
-            tutorial.text = "To create a recipe first we'll have to go to the recipe manager by clicking on the recipe tab.";
+
+            tutorialImagesHorizontal.sprite = s_restaurantManager;
+            tutorial.text = "Here we can see a variety of tools and panels. There's a satisfaction display, a staff manager, a chef manager, and a customizable menu.";
         }
         if (step == 9)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(true);
-            tutorialImagesHorizontal.sprite = s_RecipeManagerPic;
-            tutorial.text = "In the recipe manager we can view the different dishes and ingredients available to us.";
+
+            tutorialImagesHorizontal.sprite = s_satisfactionDisplay;
+            tutorial.text = "First let's look at the satisfaction display, here we can see what the public thinks about your restaurant. The more satisfaction the more likely customers will choose your restaurant over others.";
         }
         if (step == 10)
         {
-            tutorialDisplayF.SetActive(true);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesFlat.sprite = s_createRecipeButton;
-            tutorial.text = "To create a recipe we can click the (Create) button to take us to the recipe builder.";
+
+            tutorialImagesHorizontal.sprite = s_staffManager;
+            tutorial.text = "Next we'll look at the staff manager Here we can hire more staff (or even fire them) Staff helps improve the science points produced by the restaurant.";
         }
         if (step == 11)
         {
-            tutorialDisplayF.SetActive(true);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesFlat.sprite = s_dishtab;
-            tutorial.text = "First things first, lets select the type of dish we want to create";
+
+            tutorialImagesHorizontal.sprite = s_chefManager;
+            tutorial.text = "Now we'll look at the chef manager. Here we can hire chefs to the restaurant.";
         }
         if (step == 12)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialDisplaySquare.SetActive(true);
-            tutorialImagesSquare.sprite = s_dishBlueprint;
-            tutorial.text = "Dishes act as a blueprint and determine what type of ingredient can be used.";
+
+            tutorialImagesHorizontal.sprite = s_chefScreenManager;
+            tutorial.text = "Each restaurant can have up to three chefs. Chefs provide bonuses including satisfaction,science, and money at the end of each turn. Like staff they require an upkeep. Chefs can also be managed within the empire screen.";
         }
         if (step == 13)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(true);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesSquare.sprite = s_ingredientDisplay;
-            tutorial.text = "Now let's select an ingredient we want to customize.";
+
+            tutorialImagesHorizontal.sprite = s_ChefmanagerTab;
+            tutorial.text = "To manage chefs in the empire screen, return to the empire screen and click the manage chefs tab. Once you're done, return to your restaurant.";
         }
         if (step == 14)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(true);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesVertical.sprite = s_ingredientPanel;
-            tutorial.text = "Here we can view the different types of ingredients you own and what tiers you have.";
+
+            tutorialImagesHorizontal.sprite = s_menuWindow;
+            tutorial.text = "Next we have our menu. Each menu for each restaurant can be customized. Before we can add anything to our menu, we first need to build our own recipe.";
         }
+
         if (step == 15)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(true);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesVertical.sprite = s_residentPanel;
-            tutorial.text = "In Culinary Domination different customers will have different prefrences in ingredients.(You can access this information by select a resident tile)";
+
+            tutorialImagesHorizontal.sprite = s_ingredientsMenu;
+            tutorial.text = "Before we build a new recipe let's have a look at our ingredients. Click the ingredient tab button in the top left corner.(The Ingredient Bowls)";
         }
+
         if (step == 16)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(true);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesVertical.sprite = s_ingredientPanel;
-            tutorial.text = "The ingredient determines how likely someone is to come to your restaurant";
+
+            tutorialImagesHorizontal.sprite = s_ingredientsScreen;
+            tutorial.text = "In the ingredient manager, we can upgrade our ingredients, and see what tiers we have.";
         }
+
         if (step == 17)
         {
-            tutorialDisplayF.SetActive(true);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesFlat.sprite = s_tierDisplay;
-            tutorial.text = "Tiers determine how expensive and high quality a recipe is. Higher quality recipes lead to more customer satisfaction";
+
+            tutorialImagesHorizontal.sprite = s_ingredientsScreen;
+            tutorial.text = "Tiers effect the quality and pricing of an ingredient. Higher quailty ingredients leads to more customer satisfaction, but is more expensive to produce.";
         }
+
         if (step == 18)
         {
-            tutorialDisplayF.SetActive(true);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesFlat.sprite = s_tierDisplay;
-            tutorial.text = "By default players start with only tier 1. More tiers can be unlocked with ingredient points in the recipe manager";
+
+            tutorialImagesHorizontal.sprite = s_upgradeIngredientButton;
+            tutorial.text = "To upgrade your ingredients select which catagory you want to upgrade, then in the available upgrades panel choose which tier you want to unlock.";
         }
+
         if (step == 19)
         {
-            tutorialDisplayF.SetActive(true);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesFlat.sprite = s_SaveRecipeButton;
-            tutorial.text = "Let's be sure to fill out all the ingredients, and name our new recipe then click save.";
+
+            tutorialImagesHorizontal.sprite = s_recipesTab;
+            tutorial.text = "Moving on to recipes! To build a recipe first we need to start by going into the recipe manager. To get there just click on the recipe tab in the top left(Marked with the menu icon)";
         }
         if (step == 20)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(true);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesSquare.sprite = s_SavedRecipesButton;
-            tutorial.text = "Now we can view the new recipe in the saved recipes panel. Let's go return to our restaurant and assign it";
+
+            tutorialImagesHorizontal.sprite = s_recipeScreen;
+            tutorial.text = "Welcome to the recipe manager! Here we can see our saved recipes, and create new recipes. As you can see we have yet to create any recipes.";
         }
         if (step == 21)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(true);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesVertical.sprite = s_menuPanel;
-            tutorial.text = "Return to the restaurant, click on the menu button, then we can view our menu panel.";
+
+            tutorialImagesHorizontal.sprite = s_createRecipe;
+            tutorial.text = "To create a recipe start by click the dish blueprint from any of your owned dishes. The highlighted buttons mean the player owns these dishes.";
         }
         if (step == 22)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(true);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesVertical.sprite = addDishPanel;
-            tutorial.text = "Next we can click the (add) button to open up the add dish panel. Now let's click on our new recipe.";
+
+            tutorialImagesHorizontal.sprite = s_createScreen;
+            tutorial.text = "After selecting the dish you want to create, the player will be taken to the recipe creation screen. Here we can see multiple slots for various ingredients.";
         }
         if (step == 23)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(true);
-            tutorialImagesHorizontal.sprite = s_adjustingPriceSlider;
-            tutorial.text = "We can see that the recipe is assigned to this restaurant, now let's use the slider to adjust the price.";
+
+            tutorialImagesHorizontal.sprite = s_createScreen;
+            tutorial.text = "As we can see each dish comes with a different combination of available ingredient slots. There are always 2 locked slots and 1 unlocked slot.";
         }
         if (step == 24)
         {
-            tutorialDisplayF.SetActive(true);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesFlat.sprite = s_satisfaction;
-            tutorial.text = "Higher prices will lead to less customer satisfaction, but leads to more money per customer. How the price is set is up to the player.";
+
+            tutorialImagesHorizontal.sprite = s_ingredientSlot;
+            tutorial.text = "The slots that are labeled means you have to choose an ingredient restricted to that label. To pick an ingredient left click on the slot, then choose what tier ingredient you want to use.";
         }
         if (step == 25)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(true);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesVertical.sprite = s_residentPanel;
-            tutorial.text = "Customers will also have a factor to determine how much money they're willing to spend";
+
+            tutorialImagesHorizontal.sprite = s_questionMarkButton;
+            tutorial.text = "The (?) slot gives players the freedom of putting whatever catagory of they choose into the slot. In the ingredient panel to the right there'll be tabs that'll guide the player and help them select the ingredient type they want to choose.";
         }
         if (step == 26)
         {
-            tutorialDisplayF.SetActive(true);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesFlat.sprite = s_staffPanel;
-            tutorial.text = "Now we'll be learning about staff and chefs!";
+
+            tutorialImagesHorizontal.sprite = s_createScreen;
+            tutorial.text = "Once the player has finished customizing their dish, be sure to name it then click the save button.";
         }
         if (step == 27)
         {
-            tutorialDisplayF.SetActive(true);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesFlat.sprite = s_staffPanel;
-            tutorial.text = "On the right we'll find the staff panel, here we can hire more staff to increase our restaurants production.";
+
+            tutorialImagesHorizontal.sprite = s_closeButton;
+            tutorial.text = "After pressing save, the player should see their recipe appear in the saved recipes window back in the recipe manager. Press close or (esc) and return to the restaurant.";
         }
         if (step == 28)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(true);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesSquare.sprite = s_constructionQueue;
-            tutorial.text = "Production determines how fast the restaurant's construction queue can build new upgrades.";
+
+            tutorialImagesHorizontal.sprite = s_menuWindow;
+            tutorial.text = "To assign the recipe to a restaurant the player needs to click in the menu window on the button saying (Select a recipe). Then the saved recipes window should appear.";
         }
         if (step == 29)
         {
-            tutorialDisplayF.SetActive(true);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesFlat.sprite = s_staffPanel;
-            tutorial.text = "More staff means more upkeep for the restaurant per turn. Players can sell and buy more staff as they please.";
+
+            tutorialImagesHorizontal.sprite = s_addDishWindow;
+            tutorial.text = "The player should then be able to select their recipe and assign it to their menu.";
         }
         if (step == 30)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(true);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesVertical.sprite = s_chefPanel;
-            tutorial.text = "Now we'll learn about managing chefs.";
+
+            tutorialImagesHorizontal.sprite = s_recipeSlider;
+            tutorial.text = "Once the recipe is in the menu, the player should see a price slider. This allows the player to set the price for the customers. Higher prices means the player will lose satisfaction.";
         }
         if (step == 31)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(true);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesVertical.sprite = s_chefPanel;
-            tutorial.text = "If we click on the chef button next to the staff panel, we can bring up the chef panel.";
+
+            tutorialImagesHorizontal.sprite = s_techTab;
+            tutorial.text = "Before we want to end our turn we want to begin research in the tech tree. To go to the tech tree press the tech tab in the top left corner.(the Science Icon)";
         }
         if (step == 32)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(true);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesVertical.sprite = s_chefPanel;
-            tutorial.text = "Here we can see any chefs that've been assigned to the restaurant. As we can see we've yet to assign anyone.";
+
+            tutorialImagesHorizontal.sprite = s_techTree;
+            tutorial.text = "In the tech tree there are 3 catagories of tech. Mexican, American, and Italian. Each have their own playstyles.";
         }
         if (step == 33)
         {
-            tutorialDisplayF.SetActive(true);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesFlat.sprite = s_empireScreenButton;
-            tutorial.text = "To assign a chef let's return to the empire managment screen.";
+
+            tutorialImagesHorizontal.sprite = s_techTree;
+            tutorial.text = "Mexican food focuses on boosting customer satisfaction, and attracting more customers per restaurant.";
         }
         if (step == 34)
         {
-            tutorialDisplayF.SetActive(true);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesFlat.sprite = s_chefManagmentTab;
-            tutorial.text = "Now we can go and select the chef tab to open the chef manager.";
+
+            tutorialImagesHorizontal.sprite = s_techTree;
+            tutorial.text = "American food focuses on conquring more restaurants and spreading wide to make the most profits.";
         }
         if (step == 35)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(true);
-            tutorialImagesHorizontal.sprite = s_chefManagerScreen;
-            tutorial.text = "Here we can see that we own four chefs by default. Each have their own name, level, and perk.";
+
+            tutorialImagesHorizontal.sprite = s_techTree;
+            tutorial.text = "Italian food focuses on creating high quality ingredients and increasing how much science they gain per turn.";
         }
         if (step == 36)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(true);
-            tutorialImagesHorizontal.sprite = s_chefManagerScreen;
-            tutorial.text = "Chefs offer bigger bonuses for the player, but have more upkeep.";
+
+            tutorialImagesHorizontal.sprite = s_techTree;
+            tutorial.text = "Most techs are locked behind the prequistes that preceeds it. You must unlock techs to build down the tree.";
         }
         if (step == 37)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(true);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesVertical.sprite = s_assignChefPanel;
-            tutorial.text = "Select the chef to bring up the assign chef panel. Then select the restaurant you wish to send him to.";
+
+            tutorialImagesHorizontal.sprite = s_techTree;
+            tutorial.text = "To begin research simply left click on a tech you're interested in. You can even queue more than one so that when your tech is researched, the next one starts researching automatically.";
         }
         if (step == 38)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(true);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesSquare.sprite = s_techTreeWindow;
-            tutorial.text = "Now that we've assigned our chef, lets go to the tech tree and begin researching upgrades.";
+
+            tutorialImagesHorizontal.sprite = s_techTree;
+            tutorial.text = "Once you're done with the tech tree feel free to return to the map.";
         }
         if (step == 39)
         {
-            tutorialDisplayF.SetActive(true);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesFlat.sprite = s_techTab;
-            tutorial.text = "Select the (Tech) tab to go to the tech tree.";
+
+            tutorialImagesHorizontal.sprite = s_winnerScreen;
+            tutorial.text = "The last thing we'll cover is win conditions.";
         }
         if (step == 40)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(true);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesSquare.sprite = s_techTreeWindow;
-            tutorial.text = "In the tech tree we can research upgrades to construct for our restaurant.";
+
+            tutorialImagesHorizontal.sprite = s_winnerScreen;
+            tutorial.text = "There are two ways of achieving victory. Conquest and Economic.";
         }
         if (step == 41)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(true);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesSquare.sprite = s_techTreeWindow;
-            tutorial.text = "There are three different trees.(Mexican,American,and Italian) Each have their own strengths and weaknesses";
+
+            tutorialImagesHorizontal.sprite = s_winnerScreen;
+            tutorial.text = "Conquest victory is achieved if a player controls 90% of the avaiable restaurants and vacant lots.";
         }
         if (step == 42)
         {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(true);
-            tutorialImagesHorizontal.sprite = s_queueTech;
-            tutorial.text = "To begin research, select a tech you want to invest in and click it to add it to the queue.";
+
+            tutorialImagesHorizontal.sprite = s_winnerScreen;
+            tutorial.text = "Economic victory is achieved through having the most amount of money after 50 turns.";
         }
         if (step == 43)
         {
-            tutorialDisplayF.SetActive(true);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesFlat.sprite = s_resourceDisplay;
-            tutorial.text = "We can see it added to the queue. Research speed depends on how much science is being generated in the top left corner.";
-        }
-        if (step == 44)
-        {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(true);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesSquare.sprite = s_techTreeWindow;
-            tutorial.text = "Once a research is complete the player unlock an upgrade for construction, as well as an ingredient point";
-        }
-        if (step == 45)
-        {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(true);
-            tutorialImagesHorizontal.sprite = s_upgradingIngredients;
-            tutorial.text = "Ingredient points are utilized in the recipe manager to purchase new ingredients, and unlock new tiers";
-        }
-        if (step == 46)
-        {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(true);
-            tutorialImagesHorizontal.sprite = s_restaurantManager;
-            tutorial.text = "Now lets return to the restaurant and learn about the construction queue";
-        }
-        if (step == 47)
-        {
 
-            tutorialDisplayF.SetActive(true);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesFlat.sprite = s_constructionBuildButton;
-            tutorial.text = "To begin construction click the build button, we'll see a panel appear with potential upgrades.";
+            tutorialImagesHorizontal.sprite = s_logo;
+            tutorial.text = "Once you're done making all your turn 1 decisions feel free to press (End Turn) and pass the helm to the next player.";
         }
-        if (step == 48)
-        {
-            tutorialDisplayF.SetActive(false);
-            tutorialDisplaySquare.SetActive(true);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesSquare.sprite = s_constructionQueue;
-            tutorial.text = "Once we select an upgrade, we'll see it appear in the queue. Upgrades build after a certain amount of turns.";
-        }
-        if (step == 49)
-        {
-            tutorialDisplayF.SetActive(true);
-            tutorialDisplaySquare.SetActive(false);
-            tutorialDisplayV.gameObject.SetActive(false);
-            tutorialDisplayH.gameObject.SetActive(false);
-            tutorialImagesFlat.sprite = s_endTurnButton;
-            tutorial.text = "Once we're done with our turn, we can head to begin EndTurn button to let the next player go.";
-        }
+
     }
 }

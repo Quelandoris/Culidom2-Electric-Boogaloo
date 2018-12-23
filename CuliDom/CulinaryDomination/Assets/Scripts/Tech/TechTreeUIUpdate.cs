@@ -11,8 +11,12 @@ public class TechTreeUIUpdate : MonoBehaviour {
     public void OnEnable()
     {
         for (int i = 0; i < techs.Count; i++) {
-            if (GameController.Instance().activePlayer.HaveTech(techs[i].thisTech)) { // will return true if player has it
+            if (GameController.Instance().activePlayer.HaveTech(techs[i].thisTech))// will return true if player has it
+            { 
                 techs[i].techPicture.SetActive(true);
+            }
+            else {
+                techs[i].techPicture.SetActive(false);
             }
         }
     }

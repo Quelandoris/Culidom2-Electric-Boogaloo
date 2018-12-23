@@ -18,20 +18,29 @@ public class TechPurchase : MonoBehaviour {
     public Tech thisTech;
     public int techCost;
     private int techProgressIndex = -1;
+    [TextArea(5, 10)]
+    public string info;
 
     public Text costText;
     public Text queueNumber;
 
     public GameObject queuedBanner;
     public GameObject techPicture;
+    // refereence to objects in the Tech Tree Panel.
+    public Image bigPictureFrame;
+    public Text techInformationDisplay;
 
     public List<Tech> requirements;
     public List<Tech> previousLevel;
 
+
     //public Slider thisSlider;
 
     private void Start() {
-        costText.text = techCost.ToString();
+        if (costText != null)
+        {
+            costText.text = techCost.ToString();
+        }
     }
 
     void OnEnable() {
@@ -90,7 +99,13 @@ public class TechPurchase : MonoBehaviour {
         if (GameController.Instance().activePlayer.IsQueued(thisTech)) {
             Dequeue();
         } else {
+            // should be some check if there are enough tech points to research this
             Enqueue();
+            bigPictureFrame.sprite = techPicture.GetComponent<Image>().sprite; // set big picture frame to the pic of the tech being clicked
+            if (info != null)
+            {
+                techInformationDisplay.text = info;
+            }
         }
     }
 

@@ -35,7 +35,7 @@ public class DishButtonManager : MonoBehaviour {
     CameraMovement cameraScript;
 
     public Image[] foodImages = new Image[9];
-
+    public Transform foodImageList;
     public RectTransform[] buttonPositions;
     List<GameObject> ingredientButtons = new List<GameObject>();
 
@@ -575,10 +575,14 @@ public class DishButtonManager : MonoBehaviour {
         if (mainInputField.text != "" && ingredientImages.Length == ingredientImageCount)
         {
             currentRecipe.name = mainInputField.text;
+            for (int i = 0; i < foodImageList.childCount; i++){
+                if (foodImageList.GetChild(i).gameObject.activeInHierarchy) {
+                    currentRecipe.picture = foodImageList.GetChild(i).gameObject.GetComponent<Image>().sprite;
+                    break;
+                }
+            }
             gameController.activePlayer.AddRecipe(currentRecipe);
-            //createSavedButtonScript.CreateAButton(currentRecipe);
 
-            //play save menu sound?
             AudioManager.GetComponent<AudioManager>().PlayMenuSelectHigh();
             voiceScript.PlayAddRecipeVO((int)gameController.activePlayer.playerFaction.voice); // should play the right voice of the faction
 
@@ -599,11 +603,6 @@ public class DishButtonManager : MonoBehaviour {
                 image.gameObject.SetActive(false);
             }
             ingredientImages = new GameObject[0];
-
-            //dishImage.gameObject.SetActive(false);
-            //textInput.gameObject.SetActive(false);
-
-            //newRecipieButton.gameObject.SetActive(true);
 
             dishCreationPanel.gameObject.SetActive(false);
             recipeManagerPanel.SetActive(true);

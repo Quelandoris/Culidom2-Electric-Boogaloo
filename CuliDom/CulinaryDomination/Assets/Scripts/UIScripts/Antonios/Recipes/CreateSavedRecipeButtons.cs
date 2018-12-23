@@ -31,6 +31,16 @@ public class CreateSavedRecipeButtons : MonoBehaviour {
         newButton.transform.parent = content;
         content.sizeDelta = new Vector2(content.sizeDelta.x, content.sizeDelta.y + 60);
         newButton.GetComponentInChildren<Text>().text = recipe.name;
+        for (int i = 0; i < newButton.transform.childCount; i++) {
+            Transform child = newButton.transform.GetChild(i);
+            Image childImage = null;
+            if ((childImage = child.GetComponent<Image>()) != null) {
+                
+                childImage.sprite = recipe.picture;
+                break;
+                
+            }
+        }
         newButton.transform.localScale = new Vector3(1, 1, 1);
     }
 
@@ -44,6 +54,18 @@ public class CreateSavedRecipeButtons : MonoBehaviour {
                 newButton.transform.parent = content;
                 content.sizeDelta = new Vector2(content.rect.width, content.rect.height + 20);
                 newButton.GetComponentInChildren<Text>().text = gameController.activePlayer.savedRecipies[i].name;
+                newButton.transform.GetChild(2).GetComponent<Image>().sprite = gameController.activePlayer.savedRecipies[i].picture;
+                for (int j = 0; j < newButton.transform.childCount; j++)
+                {
+                    Transform child = newButton.transform.GetChild(j);
+                    Image childImage = null;
+                    if ((childImage = child.GetComponent<Image>()) != null)
+                    {
+                        childImage.sprite = gameController.activePlayer.savedRecipies[i].picture; 
+                        break;
+                        
+                    }
+                }
                 newButton.transform.localScale = new Vector3(1, 1, 1);
             }
         }

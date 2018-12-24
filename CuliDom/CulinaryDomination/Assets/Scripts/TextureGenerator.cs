@@ -85,6 +85,16 @@ public class TextureGenerator : MonoBehaviour {
         waitAnim.Rotate(-100 * Time.deltaTime * Vector3.forward);
     }
 
+    public bool SameDistrict(Building restaurant) {
+        for (int i = 0; i < allTiles.Count; i++) {
+            if (allTiles[i].GetComponent<WorldTile>().district == restaurant.tile.district) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     void FillTexture()
     {
         UnityEngine.Random.InitState(seed);

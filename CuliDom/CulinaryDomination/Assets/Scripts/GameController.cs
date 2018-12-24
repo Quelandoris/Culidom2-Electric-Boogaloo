@@ -27,6 +27,8 @@ public class GameController {
     public double expensiveDishCostThreshold = 15.00;
 
 
+
+
     private GameController() {
         playerDataControls = Object.FindObjectOfType<Player>();
         player = new PlayerData[playerCount];
@@ -108,6 +110,7 @@ public class GameController {
             {
                 player[i].CalculateRevenue();
                 player[i].AddRevenue();
+               
                 if (player[i].GetTurnRevenue() > bestTurnRevenue)
                 {
                     bestTurnRevenue = player[i].GetTurnRevenue();
@@ -201,6 +204,7 @@ public class GameController {
         }
         foreach (WorldTile residential in residentTiles)
         {
+            
             foreach (Pop customer in ((BuildingResidential)residential.building).residents)
             {
                 int[] scores = new int[restaurantTiles.Count];
@@ -283,7 +287,7 @@ public class GameController {
                         //todo - accurate distance
                         int distScore = 0;
                         if (restaurantTiles[i].building.tile.district == residential.district) {
-                            distScore = 4;
+                            distScore += 4;
                             
                         }
                         else {

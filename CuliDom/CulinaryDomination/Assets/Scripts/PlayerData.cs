@@ -164,6 +164,31 @@ public class PlayerData {
         {
             knownTech.Add(tech);
             ingredientPoints++;
+
+            // Add base rating tech bonuses //
+            if (GameController.Instance().activePlayer.HaveTech(Tech.MEXICAN_SODAS)) {
+                for (int i = 0; i < GameController.Instance().activePlayer.ownedRestaurants.Count; i++) {
+                    if (GameController.Instance().activePlayer.ownedRestaurants[i].defaultRating == 6.0)
+                    { 
+                        GameController.Instance().activePlayer.ownedRestaurants[i].defaultRating += 0.5;
+                    }
+                }
+            }
+
+            if (GameController.Instance().activePlayer.HaveTech(Tech.MIRAACHI_BAND))
+            {
+                for (int i = 0; i < GameController.Instance().activePlayer.ownedRestaurants.Count; i++)
+                {
+                    if (GameController.Instance().activePlayer.ownedRestaurants[i].defaultRating == 6.5)
+                    {
+                        GameController.Instance().activePlayer.ownedRestaurants[i].defaultRating += 1.0;
+                    }
+                }
+            }
+
+            foreach (BuildingRestaurant restaurant in ownedRestaurants) {
+                restaurant.AddTech(tech);
+            }
         }
     }
 

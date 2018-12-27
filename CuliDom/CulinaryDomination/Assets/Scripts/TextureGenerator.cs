@@ -95,6 +95,34 @@ public class TextureGenerator : MonoBehaviour {
         return false;
     }
 
+    public int AmountOfCityBlocks(Building restaurant) {
+        int amountOfCityBlocks = 0;
+        for (int i = 0; i < allTiles.Count; i++) {
+            if (allTiles[i].GetComponent<WorldTile>().district == restaurant.tile.district)
+            {
+                if (allTiles[i].GetComponent<WorldTile>().urbanization > 0.3f) {
+                    amountOfCityBlocks++;
+                }
+            }
+        }
+        return amountOfCityBlocks;
+    }
+
+    public int AmountOfRuralBlocks(Building restaurant) {
+        int amountOfRuralBlocks = 0;
+        for (int i = 0; i < allTiles.Count; i++)
+        {
+            if (allTiles[i].GetComponent<WorldTile>().district == restaurant.tile.district)
+            {
+                if (allTiles[i].GetComponent<WorldTile>().urbanization < 0.009f)
+                {
+                    amountOfRuralBlocks++;
+                }
+            }
+        }
+        return amountOfRuralBlocks;
+    }
+
     void FillTexture()
     {
         UnityEngine.Random.InitState(seed);

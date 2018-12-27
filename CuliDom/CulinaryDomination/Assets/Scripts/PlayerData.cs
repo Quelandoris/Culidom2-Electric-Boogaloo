@@ -148,6 +148,40 @@ public class PlayerData {
         techPointRate += value;
     }
 
+    public void AddTechRateByTechUpgrades() {
+        if (HaveTech(Tech.SCIENCE_INCREASE)) {
+            double italianRecipeCount = 0.0;
+            for (int i = 0; i < ownedRestaurants.Count; i++) {
+                for (int j = 0; j < ownedRestaurants[i].recipes.Count; j++) {
+                    if (ownedRestaurants[i].recipes[j].recipe.dishCategory == DishCategory.ITALIAN) {
+                        italianRecipeCount += 0.5;
+                    }
+                }
+            }
+
+            AddTechPointRate((int)italianRecipeCount);
+        }
+
+        if (HaveTech(Tech.FANCY_STAFF)) {
+            int fancyStaffPoints = 0;
+            for (int i = 0; i < ownedRestaurants.Count; i++) {
+                for (int j = 0; j < ownedRestaurants[i].staff; i++) {
+                    fancyStaffPoints += 2;
+                }
+            }
+
+            AddTechPointRate(fancyStaffPoints);
+        }
+
+        if (HaveTech(Tech.GARLIC_BREAD)) {
+            AddTechPointRate(1);
+        }
+
+        if (HaveTech(Tech.FINE_DINING)) {
+            AddTechPointRate(10);
+        }
+    }
+
     public void SetTechPointRate(int value)
     {
         techPointRate = value;
@@ -214,13 +248,6 @@ public class PlayerData {
     public double GetTurnRevenue()
     {
         return turnRevenue;
-    }
-
-    public void ReadWhatIGot() {
-
-        for (int i = 0; i < savedRecipies[0].ingredients.Length; i++) {
-            //Debug.Log("Saved recipie slot choice is: " + Ingredient.IngredientToString(savedRecipies[0].ingredients[i]));
-        }
     }
 
     public bool IsQueued(Tech queueCheck) {

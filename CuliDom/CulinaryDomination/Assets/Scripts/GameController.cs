@@ -110,7 +110,7 @@ public class GameController {
             {
                 player[i].CalculateRevenue();
                 player[i].AddRevenue();
-               
+                player[i].AddTechRateByTechUpgrades();
                 if (player[i].GetTurnRevenue() > bestTurnRevenue)
                 {
                     bestTurnRevenue = player[i].GetTurnRevenue();
@@ -283,15 +283,22 @@ public class GameController {
                         else {
                             priceScore = 1;
                         }
+                        if (((BuildingRestaurant)restaurantTiles[i].building).GetTechUpgrades().Contains(Tech.EXPENSIVE_CLIENTLE)) {
+                            priceScore += 4;
+                        }
 
-                        //todo - accurate distance
-                        int distScore = 0;
+                            //todo - accurate distance
+                            int distScore = 0;
                         if (restaurantTiles[i].building.tile.district == residential.district) {
                             distScore += 4;
                             
                         }
                         else {
                             if (((BuildingRestaurant)restaurantTiles[i].building).GetTechUpgrades().Contains(Tech.SAUCE_BAR))
+                            {
+                                distScore += 2;
+                            }
+                            if (((BuildingRestaurant)restaurantTiles[i].building).GetTechUpgrades().Contains(Tech.CATERING))
                             {
                                 distScore += 2;
                             }
@@ -356,7 +363,7 @@ public class GameController {
                     List<RestaurantRecipe> winners = ((BuildingRestaurant)restaurantTiles[bestIndex].building).recipes;
                     //Added 0.1 tech per customer due to upgrade
                     if(((BuildingRestaurant)restaurantTiles[bestIndex].building).GetTechUpgrades().Contains(Tech.PLACE_HOLDER)) {
-                        //Add 0.1 tech to the player (tech is an int right now)
+                        GameController.Instance().activePlayer.AddTechPointRate(1);
                     }
                     //Perhaps fixes permanent "please wait"
                     if(winners.Count>0) {

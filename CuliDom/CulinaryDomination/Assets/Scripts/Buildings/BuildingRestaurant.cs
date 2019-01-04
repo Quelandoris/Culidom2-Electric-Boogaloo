@@ -118,6 +118,8 @@ public class BuildingRestaurant : Building {
             } else if (upgrades.Contains(Tech.CUTTING_CORNERS)) {
 
                 turnRevenue += CuttingCornersTech(r);
+            } else if (upgrades.Contains(Tech.FRESH_PRODUCE)) {
+                turnRevenue += FreshProduceTech(r);
             }
             else {
                 turnRevenue += (r.sellingPrice - r.manufacturingCost) * r.quantitySold;
@@ -132,9 +134,23 @@ public class BuildingRestaurant : Building {
                 turnRevenue *= 1.05;
             }
         }
+        // City SIde
+        if (upgrades.Contains(Tech.CITY_SIDE)) {
+            int cityBlocks = TileGenerator.AmountOfCityBlocks(this);
+            GameController.Instance().activePlayer.AddTechPointRate(cityBlocks);
+        }
+        // Remote Location
+        if (upgrades.Contains(Tech.REMOTE_LOCATION)) {
+            int ruralAreas = TileGenerator.AmountOfRuralBlocks(this);
+            GameController.Instance().activePlayer.AddTechPointRate(ruralAreas);
+        }
 
         if (upgrades.Contains(Tech.BRANDED_MICROWAVE_FOODS)) {
             turnRevenue += 100;
+        }
+
+        if (upgrades.Contains(Tech.FINE_DINING)) {
+            turnRevenue += 1.1;
         }
 
 
@@ -184,6 +200,21 @@ public class BuildingRestaurant : Building {
         }
         double newMaunfacturingCost = rr.manufacturingCost * cuttingCornerModifier;
         return (rr.sellingPrice - newMaunfacturingCost) * rr.quantitySold;
+    }
+
+    double FreshProduceTech(RestaurantRecipe rr) {
+        double freshProduceModifier = 100.00;
+        foreach (TieredIngredient i in rr.recipe.ingredients)
+        {
+            if (i.ingredient == RecipeIngredient.TOMATOES || i.ingredient == RecipeIngredient.GARLIC || i.ingredient == RecipeIngredient.LETTUCE ||
+                i.ingredient == RecipeIngredient.LIMES || i.ingredient == RecipeIngredient.ARTICHOKE)
+            {
+                freshProduceModifier -= 0.1;
+            }
+        }
+
+        double newManufacturingCost = rr.manufacturingCost * freshProduceModifier;
+        return (rr.sellingPrice - newManufacturingCost) * rr.quantitySold;
     }
 
     public double CalculateTurnRevenueWithouUpkeep()
@@ -385,6 +416,23 @@ public class BuildingRestaurant : Building {
             {
                 ret = 10.0;
             }
+        }
+
+        if (upgrades.Contains(Tech.GARLIC_BREAD))
+        {
+            ret += 1.0;
+            if (ret > 10.0)
+            {
+                ret = 10.0;
+            }
+        }
+
+        if (upgrades.Contains(Tech.FINE_DINING)) {
+            ret += 2.0;
+            if (ret > 10.0) {
+                ret = 10.0;
+            }
+            
         }
 
         if (upgrades.Contains(Tech.CHAIN_RESTAURANT))

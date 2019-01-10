@@ -32,12 +32,14 @@ public class BuildingRestaurant : Building {
 
     CameraMovement cameraScript;
     VoicePacks voiceScript;
+    TextureGenerator TileGenerator;
 
     public void Awake()
     {
         cameraScript = FindObjectOfType<CameraMovement>();
         reviews = new int[numberOfReviewToKeep];
         voiceScript = FindObjectOfType<VoicePacks>();
+        TileGenerator = FindObjectOfType<TextureGenerator>();
     }
 
     public override void Click()
@@ -106,30 +108,113 @@ public class BuildingRestaurant : Building {
         Debug.Log("Have " + recipes.Count + " recipies");
         foreach (RestaurantRecipe r in recipes) {
             Debug.Log("Sold " + r.quantitySold + " units of " + r.recipe.name);
-            turnRevenue += (r.sellingPrice - r.manufacturingCost) * r.quantitySold;
+            if (upgrades.Contains(Tech.CHEAPER_INGREDIENTS))
+            {
+                turnRevenue += CheaperIngredientTech(r);
+
+            } else if (upgrades.Contains(Tech.STEAK_HOUSE)) {
+
+                turnRevenue += SteakHouseTech(r);
+            } else if (upgrades.Contains(Tech.CUTTING_CORNERS)) {
+
+                turnRevenue += CuttingCornersTech(r);
+            } else if (upgrades.Contains(Tech.FRESH_PRODUCE)) {
+                turnRevenue += FreshProduceTech(r);
+            }
+            else {
+                turnRevenue += (r.sellingPrice - r.manufacturingCost) * r.quantitySold;
+            }
             r.quantitySold = 0;
         }
         //EveryCorner
-        /*if("You have another restaurant in this district")    {
-         * turnRevenue *= 1.05;
-         * Debug.Log("You got 105% the revenue for having more than one restaurant here");
-         * } */
+        if (upgrades.Contains(Tech.EVERY_CORNER))
+        {
+            if (TileGenerator.SameDistrict(this))
+            { // looks through all the tiles every turn. Which slows the game down a lot. Has to be a better way
+                turnRevenue *= 1.05;
+            }
+        }
+        // City SIde
+        if (upgrades.Contains(Tech.CITY_SIDE)) {
+            int cityBlocks = TileGenerator.AmountOfCityBlocks(this);
+            GameController.Instance().activePlayer.AddTechPointRate(cityBlocks);
+        }
+        // Remote Location
+        if (upgrades.Contains(Tech.REMOTE_LOCATION)) {
+            int ruralAreas = TileGenerator.AmountOfRuralBlocks(this);
+            GameController.Instance().activePlayer.AddTechPointRate(ruralAreas);
+        }
+
+        if (upgrades.Contains(Tech.BRANDED_MICROWAVE_FOODS)) {
+            turnRevenue += 100;
+        }
+
+        if (upgrades.Contains(Tech.FINE_DINING)) {
+            turnRevenue += 1.1;
+        }
+
+
         //Limited Time Event
         if (upgrades.Contains(Tech.LIMITED_TIME_OFFER) && GameController.Instance().GetRoundNumber()%10==0) {
             turnRevenue += 150;
             Debug.Log("You got an extra 150 per restaurant for your Limited Time Offer tech");
         }
-        //Branded Microwae Foods
-        if (GameController.Instance().activePlayer.HaveTech(Tech.BRANDED_MICROWAVE_FOODS)) {
-            turnRevenue += 100;
-            Debug.Log("You got an extra 100 per restaurant for your Branded Microwave Foods");
-        }
 
-        Debug.Log("The turn revenue for this player is " + turnRevenue);
+        if (upgrades.Contains(Tech.CHAIN_RESTAURANT)) {
+            turnRevenue *= 1.1;
+        }
+      
 
         return turnRevenue;
 
         
+    }
+
+    double CheaperIngredientTech(RestaurantRecipe rr) {
+        double newManufacturingCost = rr.manufacturingCost * 0.9;
+        return (rr.sellingPrice - newManufacturingCost) * rr.quantitySold;
+
+    }
+
+    double SteakHouseTech(RestaurantRecipe rr) {
+        double steakHouseModifier = 100.00;
+        foreach (TieredIngredient i in rr.recipe.ingredients)
+        {
+            if (i.ingredient == RecipeIngredient.CHICKEN || i.ingredient == RecipeIngredient.PORK || i.ingredient == RecipeIngredient.BEEF ||
+                i.ingredient == RecipeIngredient.VIENNA || i.ingredient == RecipeIngredient.LOBSTER)
+            {
+                steakHouseModifier -= 0.05;
+            }
+        }
+        double newManufacturingCost = rr.manufacturingCost * steakHouseModifier;
+        return (rr.sellingPrice - newManufacturingCost) * rr.quantitySold;
+
+    }
+
+    double CuttingCornersTech(RestaurantRecipe rr) {
+        double cuttingCornerModifier = 100.00;
+        foreach (TieredIngredient i in rr.recipe.ingredients) {
+            if (i.tier == 0) {
+                cuttingCornerModifier -= 0.10;
+            }
+        }
+        double newMaunfacturingCost = rr.manufacturingCost * cuttingCornerModifier;
+        return (rr.sellingPrice - newMaunfacturingCost) * rr.quantitySold;
+    }
+
+    double FreshProduceTech(RestaurantRecipe rr) {
+        double freshProduceModifier = 100.00;
+        foreach (TieredIngredient i in rr.recipe.ingredients)
+        {
+            if (i.ingredient == RecipeIngredient.TOMATOES || i.ingredient == RecipeIngredient.GARLIC || i.ingredient == RecipeIngredient.LETTUCE ||
+                i.ingredient == RecipeIngredient.LIMES || i.ingredient == RecipeIngredient.ARTICHOKE)
+            {
+                freshProduceModifier -= 0.1;
+            }
+        }
+
+        double newManufacturingCost = rr.manufacturingCost * freshProduceModifier;
+        return (rr.sellingPrice - newManufacturingCost) * rr.quantitySold;
     }
 
     public double CalculateTurnRevenueWithouUpkeep()
@@ -143,25 +228,7 @@ public class BuildingRestaurant : Building {
             turnRevenue += (r.sellingPrice - r.manufacturingCost) * r.quantitySold; // randomize how many customers
            // r.quantitySold = 0;
         }
-        //EveryCorner
-        /*if("You have another restaurant in this district")    {
-         * turnRevenue *= 1.05;
-         * Debug.Log("You got 105% the revenue for having more than one restaurant here");
-         * } */
-        //Limited Time Event
-        if (upgrades.Contains(Tech.LIMITED_TIME_OFFER) && GameController.Instance().GetRoundNumber() % 10 == 0)
-        {
-            turnRevenue += 150;
-            Debug.Log("You got an extra 150 per restaurant for your Limited Time Offer tech");
-        }
-        //Branded Microwae Foods
-        if (GameController.Instance().activePlayer.HaveTech(Tech.BRANDED_MICROWAVE_FOODS))
-        {
-            turnRevenue += 100;
-            Debug.Log("You got an extra 100 per restaurant for your Branded Microwave Foods");
-        }
-
-        Debug.Log("The turn revenue for this player is " + turnRevenue);
+        
 
         return turnRevenue;
 
@@ -200,26 +267,19 @@ public class BuildingRestaurant : Building {
 
     public void BuyStaff()
     {
-        if (GameController.Instance().activePlayer.GetMoney() >= staffCost)
+        if (GameController.Instance().activePlayer.HaveTech(Tech.CHEAP_WORKERS))
         {
-            //Cheaper staff tech
-            if (upgrades.Contains(Tech.CHEAP_WORKERS))
+            if (GameController.Instance().activePlayer.GetMoney() >= (staffCost * 0.75))
             {
-                GameController.Instance().activePlayer.AddMoney(-staffCost * 0.75);
-                Debug.Log("Your staff cost 25% less thanks to Cheaper Staff");
+                GameController.Instance().activePlayer.AddMoney(-(staffCost * 0.75));
+
+                staff++;
+                CalculateUpkeep(); //Does this really need to be called?
+
             }
-            else
-            {
+            else {
                 GameController.Instance().activePlayer.AddMoney(-staffCost);
             }
-            staff++;
-            CalculateUpkeep(); //Does this really need to be called?
-
-            try
-            {
-                // AudioManager.Play() "Buy staff"
-            }
-            catch { }
         }
         
     }
@@ -322,7 +382,7 @@ public class BuildingRestaurant : Building {
         if(reviewCount == 0) {
             //returns default ratingMultiplyer
             ret = defaultRating;
-        } else if(reviewCount<reviews.Length) {
+        } else if(reviewCount < reviews.Length) {
             for (int i = 0; i<reviewCount; i++) {
                 ret += reviews[i];
             }
@@ -333,6 +393,57 @@ public class BuildingRestaurant : Building {
             }
             ret = ret / reviews.Length;
         }
+        // Add in rating tech bonuses //
+        if (upgrades.Contains(Tech.CHIPS_SALSA)) { 
+            ret += 0.2;
+            if (ret > 10.0) {
+                ret = 10.0;
+            }
+        }
+
+        if (upgrades.Contains(Tech.SAUCE_BAR)) {
+            ret += 0.4;
+            if (ret > 10.0)
+            {
+                ret = 10.0;
+            }
+        }
+
+        if (upgrades.Contains(Tech.MIRAACHI_BAND))
+        {
+            ret += 1.0;
+            if (ret > 10.0)
+            {
+                ret = 10.0;
+            }
+        }
+
+        if (upgrades.Contains(Tech.GARLIC_BREAD))
+        {
+            ret += 1.0;
+            if (ret > 10.0)
+            {
+                ret = 10.0;
+            }
+        }
+
+        if (upgrades.Contains(Tech.FINE_DINING)) {
+            ret += 2.0;
+            if (ret > 10.0) {
+                ret = 10.0;
+            }
+            
+        }
+
+        if (upgrades.Contains(Tech.CHAIN_RESTAURANT))
+        {
+            ret -= 0.5;
+            if (ret < 0.0)
+            {
+                ret = 0.0;
+            }
+        }
+
         return ret;
         //value from 0 - 10 is rating
     }
@@ -358,8 +469,14 @@ public class BuildingRestaurant : Building {
         }
 
         reviewCount++;
+        
         reviews[reviewCount%reviews.Length] = newRating;
-
+        if (upgrades.Contains(Tech.INDOOR_FOUNTAIN)) {
+            newRating -= 2;
+            if (newRating < 0) {
+                newRating = 0;
+            }
+        }
         Debug.Log("Added Review of " + newRating.ToString());
     }
 
